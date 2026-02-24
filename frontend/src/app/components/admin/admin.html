@@ -1,0 +1,28 @@
+<div class="admin-layout">
+  <div class="card admin-card">
+    <h2>📜 Registre du Maître</h2>
+    <div class="input-group">
+      <input type="text" [(ngModel)]="nom" placeholder="Nom de la nouvelle quête...">
+      <button (click)="creer()" [disabled]="!nom()">Publier la quête</button>
+    </div>
+  </div>
+
+  <div class="card admin-card sessions-list">
+    <h3>Quêtes en cours</h3>
+    @if (sessions().length > 0) {
+      <ul>
+        @for (s of sessions(); track s.nom) {
+          <li>
+            <div class="session-info">
+              <strong>{{ s.nom }}</strong> 
+              <span>Stock : {{ s.produits.length }} reliques</span>
+              <small>Maître de guilde : {{ s.createur }}</small>
+            </div>
+          </li>
+        }
+      </ul>
+    } @else {
+      <p style="text-align: center; font-style: italic;">Le registre est vide pour le moment...</p>
+    }
+  </div>
+</div>

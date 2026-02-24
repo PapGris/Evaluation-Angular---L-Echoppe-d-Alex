@@ -1,0 +1,21 @@
+<header class="navbar">
+  <div class="nav-container">
+    <h1 class="logo" (click)="router.navigate(['/game'])">⚔️ L'Échoppe d'Alex</h1>
+    
+    <div class="user-section">
+      @if (api.user()) {
+        <div class="user-pill">
+          <span class="status-icon">●</span>
+          <span class="username">{{ api.user()?.email?.split('@')?.[0] || 'Marchand' }}</span>
+        </div>
+        <button class="nav-btn logout" (click)="api.logout()">Déconnexion</button>
+      } @else {
+        <button class="nav-btn login" (click)="goToLogin()">Connexion</button>
+      }
+    </div>
+  </div>
+</header>
+
+<main class="content-area">
+  <router-outlet></router-outlet>
+</main>

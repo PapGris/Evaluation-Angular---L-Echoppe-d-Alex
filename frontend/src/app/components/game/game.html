@@ -1,0 +1,70 @@
+<div class="container" [class.game-active]="session()">
+  @if (!session()) {
+    <div class="card selection-card">
+      <h2>📜 Échoppes disponibles</h2>
+      <div class="session-grid">
+        @for (s of availableSessions(); track s.nom) {
+          <div class="session-container">
+            <div class="session-item" (click)="$event.stopPropagation(); rejoindre(s)">
+              <strong>{{ s.nom }}</strong>
+              <small>📜 Échoppe de {{ s.createur }}</small>
+            </div>
+            <div class="mini-ranking">
+               <p class="rank-title">🏆 Top Marchands</p>
+               @for (p of s.participants.sort(sortParticipants); track p.utilisateur; let i = $index) {
+                 @if (i < 3) { 
+                   <div class="mini-score">
+                     <span>{{ i+1 }}. {{ p.utilisateur.split('@')[0] }}</span>
+                     <span>{{ p.score }} PO</span>
+                   </div>
+                 }
+               } @empty {
+                 <div class="empty-msg">Aucune transaction enregistrée...</div>
+               }
+            </div>
+          </div>
+        }
+      </div>
+    </div>
+  } @else {
+    <div class="game-layout">
+      <div class="game-core">
+        @if (currentIndex() < 4) {
+          <div class="card">
+            <h3>{{ session().produits[currentIndex()].nom }}</h3>
+            
+            <div class="image-container">
+              <img [src]="session().produits[currentIndex()].url" [alt]="session().produits[currentIndex()].nom">
+            </div>
+            
+            @if (!feedback()) {
+              <div class="input-group">
+                <input type="number" [(ngModel)]="guess" placeholder="Estimation (PO)">
+                <button (click)="$event.stopPropagation(); valider()" [disabled]="!guess()">Sceller mon offre</button>
+              </div>
+            } @else {
+              <div class="feedback-box">
+                <p>Valeur réelle : <strong>{{ feedback().prixReel }} PO</strong></p>
+                <p>Points obtenus : <strong>{{ feedback().pointsObtenus }}</strong></p>
+                <button (click)="$event.stopPropagation(); suivant()">Objet suivant</button>
+              </div>
+            }
+          </div>
+        } @else {
+          <div class="card">
+            <h2>Quête terminée !</h2>
+            <p>Votre expertise a été enregistrée dans le registre de la guilde.</p>
+            <button (click)="$event.stopPropagation(); session.set(null)">Retour aux échoppes</button>
+          </div>
+        }
+      </div>
+
+      <div class="game-sidebar">
+        <app-classement 
+            [participants]="session().participants" 
+            (onQuitter)="session.set(null)"> 
+        </app-classement>
+      </div>
+    </div>
+  }
+</div>

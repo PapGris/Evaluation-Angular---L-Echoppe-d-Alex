@@ -1,0 +1,28 @@
+<div class="ranking-card">
+  <h3>🏆 Classement de la session</h3>
+  
+  <table>
+    <thead>
+      <tr>
+        <th>Rang</th>
+        <th>Joueur</th>
+        <th>Score Total</th>
+      </tr>
+    </thead>
+    <tbody>
+      @for (p of sortedParticipants; track p.utilisateur; let i = $index) {
+        <tr [class.highlight]="p.utilisateur === api.user()?.email">
+          <td>#{{ i + 1 }}</td>
+          <td>{{ p.utilisateur }}</td>
+          <td><strong>{{ p.score }} pts</strong></td>
+        </tr>
+      } @empty {
+        <tr>
+          <td colspan="3">Aucun score enregistré pour le moment.</td>
+        </tr>
+      }
+    </tbody>
+  </table>
+
+  <button (click)="quitterPartie()">Retour aux Échoppes</button>
+</div>

@@ -1,0 +1,8 @@
+<div class="login-container">
+  <div class="card login-card">
+    <h2>Connexion</h2>
+    <input type="email" [(ngModel)]="email" placeholder="Email (ex: a@a.com)">
+    <input type="password" [(ngModel)]="password" placeholder="Mot de passe">
+    <button (click)="submit()" [disabled]="!email || !password">Entrer dans l'échoppe</button>
+  </div>
+</div>
